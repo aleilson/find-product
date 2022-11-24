@@ -1,24 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import { ThemeProvider } from 'styled-components';
+import { ProductProps, SearchProducts } from './components/SearchProducts';
+import { ShowDetailsProduct } from './components/ShowDetailsProduct';
+import { GlobalStyle } from './styles/global';
+import { defaultTheme } from './styles/themes/default';
 
 function App() {
+  const [productDetails, setProductDetails] = useState<ProductProps>();
+
+  function onGetProductDetails(product: ProductProps) {
+    return setProductDetails(product);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ThemeProvider theme={defaultTheme}>
+          <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+            <SearchProducts handleGetProductDetails={onGetProductDetails}  />
+
+            { productDetails && <ShowDetailsProduct productDetails={productDetails} /> }
+          </div>
+          <GlobalStyle />
+      </ThemeProvider>
     </div>
   );
 }
